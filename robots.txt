@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://nyc-psychometrics.github.io/sitemap.xml
+Sitemap: https://psychometrics.nyc/sitemap.xml
