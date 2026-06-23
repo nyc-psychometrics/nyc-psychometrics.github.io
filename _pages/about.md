@@ -1,10 +1,10 @@
 ---
 layout: about
-title: about
+title: home
 permalink: /
-subtitle: A space for latent variable measurement and snacks
+subtitle: A community for latent variable measurement (and snacks) in and around New York City
 
-selected_papers: true # includes a list of papers marked as "selected={true}"
+selected_papers: false
 social: true # includes social icons at the bottom of the page
 
 announcements:
@@ -14,8 +14,24 @@ announcements:
 
 latest_posts:
   enabled: false
-  scrollable: true # adds a vertical scroll bar if there are more than 3 new posts items
-  limit: 3 # leave blank to include all the blog posts
+  scrollable: true
+  limit: 3
 ---
 
-Description forthcoming
+The **New York City Psychometrics Group** brings together researchers, students,
+practitioners, and the merely curious who care about measurement, latent variables,
+and the science of psychological and educational testing across the five boroughs and beyond.
+
+We host talks, happy hours, and meetups, and we help connect the
+[doctoral programs](/programs/) scattered across the city. Whether you work on
+item response theory, computational psychometrics, scale development, or anything in
+between, there's a seat for you.
+
+### Join the conversation
+
+The easiest way to stay in the loop is to join our Google Group — that's where
+announcements, event details, and discussion happen.
+
+<a class="btn btn-sm z-depth-0" role="button" href="https://groups.google.com/g/psychometrics-nyc" target="_blank" style="border: 1px solid; padding: 8px 16px; border-radius: 6px;">Join the Google Group →</a>
+
+Upcoming events and announcements are listed below.
