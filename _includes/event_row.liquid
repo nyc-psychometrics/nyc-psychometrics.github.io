@@ -1,0 +1,13 @@
+{%- comment -%}
+  One row of an event table. Params: item -- the event document.
+{%- endcomment -%}
+<tr>
+  <th scope="row" style="width: 20%">{{ include.item.date | date: '%b %-d, %Y' }}</th>
+  <td>
+    {% if include.item.inline %}
+      {{ include.item.content | remove: '<p>' | remove: '</p>' | emojify }}
+    {% else %}
+      <a class="event-title" href="{{ include.item.url | relative_url }}">{{ include.item.title }}</a>
+    {% endif %}
+  </td>
+</tr>

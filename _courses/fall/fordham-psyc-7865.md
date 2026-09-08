@@ -8,7 +8,7 @@ university_slug: "fordham-university"
 instructor: "D. Betsy McCoach"
 semester: "Fall"
 semester_order: 1
-meeting_times: "Mondays from 3:30-7:20"
+meeting_times: "M 3.30-7.20p"
 meetings:
   - day_index: 0
     day_name: "Monday"

@@ -8,7 +8,21 @@
   The grid spans only the hours this semester actually uses. Blocks are
   positioned as percentages of that span via calc(), so the layout stays exact
   without Liquid having to do floating-point math. `lane`/`lanes` come from the
-  generator and place overlapping courses side by side.
+  course front matter and place overlapping courses side by side.
+
+  CAREFUL WITH WHITESPACE CONTROL: this include is rendered into courses.md,
+  which kramdown parses as Markdown. Kramdown only treats a block-level tag
+  (<div>, <ul>, <table>...) as HTML when it begins a line. A whitespace-
+  stripping Liquid tag directly above such a tag (a trailing -%} , or a
+  comment block whose markers strip both sides) pulls it up onto the previous
+  line, and kramdown then escapes it into visible &lt;ul&gt; text on the page.
+  Keep a newline between any Liquid tag and the block tag under it. For the
+  same reason there are no inline HTML comments between the blocks below:
+  kramdown wraps those in a paragraph, leaving stray empty <p> margins.
+
+  Three blocks are rendered per semester: the week grid (wide screens), the
+  day-by-day agenda (narrow screens, where a 5-column grid is unreadable), and
+  the university color legend.
 {%- endcomment -%}
 
 {%- assign min_m = 1440 -%}
@@ -32,7 +46,6 @@
   {%- assign day_names = 'Monday,Tuesday,Wednesday,Thursday,Friday' | split: ',' -%}
   {%- assign day_abbrs = 'Mon,Tue,Wed,Thu,Fri' | split: ',' -%}
 
-  <!-- Week grid (wide screens) -->
   <div class="course-cal" style="--cal-rows: {{ rows }}" role="table" aria-label="{{ include.semester }} weekly meeting times">
     <div class="course-cal-corner" aria-hidden="true"></div>
     {%- for day in (0..4) %}
@@ -84,7 +97,6 @@
     {%- endfor %}
   </div>
 
-  <!-- Day-by-day agenda (narrow screens): a 5-column grid is unreadable on a phone -->
   <div class="course-agenda">
     {%- for day in (0..4) -%}
       {%- assign day_has_meetings = false -%}
@@ -116,8 +128,8 @@
     {%- endfor -%}
   </div>
 
-  <!-- Legend -->
-  {%- assign uni_slugs = include.courses | map: 'university_slug' | uniq | sort -%}
+  {%- assign uni_slugs = include.courses | map: 'university_slug' | uniq | sort %}
+
   <ul class="course-legend">
     {%- for slug in uni_slugs -%}
       {%- assign uni = site.data.universities[slug] -%}

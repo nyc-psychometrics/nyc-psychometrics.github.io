@@ -9,7 +9,7 @@ instructor: "Klint Kanopka"
 semester: "Fall"
 semester_order: 1
 link: "https://klintkanopka.com/courses/statcomp/"
-meeting_times: "Wednesday, 3.45-4.35p  (Lab); Thursday, 4.55-6.35p (Lecture)"
+meeting_times: "W 3.45-4.35p; Th 4.55-6.35p"
 meetings:
   - day_index: 2
     day_name: "Wednesday"

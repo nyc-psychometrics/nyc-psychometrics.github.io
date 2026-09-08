@@ -327,3 +327,60 @@
     }
   }
 }
+
+/*******************************************************************************
+ * Events
+ ******************************************************************************/
+
+// Shares the definition-list shape used by course pages.
+.event-facts {
+  display: grid;
+  grid-template-columns: 6rem 1fr;
+  gap: 0.5rem 1rem;
+  margin: 1.5rem 0 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--global-divider-color);
+  font-size: 0.9rem;
+
+  dt {
+    font-weight: 600;
+    color: var(--global-text-color-light);
+  }
+
+  dd {
+    margin-bottom: 0;
+    overflow-wrap: anywhere;
+  }
+}
+
+.event-back {
+  margin-top: 2.5rem;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 640px) {
+  .event-facts {
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
+
+    dt {
+      margin-top: 0.75rem;
+    }
+  }
+}
+
+.events-heading {
+  margin-bottom: 0.75rem;
+  font-size: 1.3rem;
+}
+
+.events-heading-past {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--global-divider-color);
+  color: var(--global-text-color-light);
+}
+
+.events-empty {
+  color: var(--global-text-color-light);
+}

@@ -1,0 +1,102 @@
+{%- comment -%}
+  Event listing.
+
+  Params:
+    limit -- home page: a single table capped at page.announcements.limit
+    split -- events page: an "Upcoming" table plus a "Past events" table
+
+  Upcoming events run soonest-first, so the next thing happening is always at
+  the top. Past events run most-recent-first.
+
+  Whether an event is upcoming is decided when the site is built, so a
+  scheduled rebuild keeps the split honest between pushes -- see
+  .github/workflows/rebuild.yml.
+{%- endcomment -%}
+
+{% assign now_ts = 'now' | date: '%s' | plus: 0 %}
+{% assign chronological = site.events | sort: 'date' %}
+
+{% assign upcoming_count = 0 %}
+{% assign past_count = 0 %}
+{% for item in chronological %}
+  {% assign ts = item.date | date: '%s' | plus: 0 %}
+  {% if ts >= now_ts %}
+    {% assign upcoming_count = upcoming_count | plus: 1 %}
+  {% else %}
+    {% assign past_count = past_count | plus: 1 %}
+  {% endif %}
+{% endfor %}
+
+<div class="events">
+  {% if site.events == blank %}
+    <p>No events yet...</p>
+  {% elsif include.split %}
+    <h2 class="events-heading">Upcoming</h2>
+    {% if upcoming_count == 0 %}
+      <p class="events-empty">
+        Nothing on the calendar right now. Announcements go out on the
+        <a href="{{ '/join/' | relative_url }}">Google Group</a> first.
+      </p>
+    {% else %}
+      <div class="table-responsive">
+        <table class="table table-sm table-borderless">
+          {% for item in chronological %}
+            {% assign ts = item.date | date: '%s' | plus: 0 %}
+            {% if ts >= now_ts %}
+              {% include event_row.liquid item=item %}
+            {% endif %}
+          {% endfor %}
+        </table>
+      </div>
+    {% endif %}
+
+    {% if past_count > 0 %}
+      <h2 class="events-heading events-heading-past">Past events</h2>
+      <div class="table-responsive">
+        <table class="table table-sm table-borderless">
+          {% for item in chronological reversed %}
+            {% assign ts = item.date | date: '%s' | plus: 0 %}
+            {% if ts < now_ts %}
+              {% include event_row.liquid item=item %}
+            {% endif %}
+          {% endfor %}
+        </table>
+      </div>
+    {% endif %}
+  {% else %}
+    {%- comment -%}
+      Home page: upcoming first (soonest at top), then recent past events fill
+      out the remaining slots.
+    {%- endcomment -%}
+    {% assign events_size = site.events | size %}
+    {% if include.limit and page.announcements.limit %}
+      {% assign events_limit = page.announcements.limit %}
+    {% else %}
+      {% assign events_limit = events_size %}
+    {% endif %}
+    <div
+      class="table-responsive"
+      {% if include.limit and page.announcements.scrollable and events_size > 3 %}
+        style="max-height: 60vw"
+      {% endif %}
+    >
+      <table class="table table-sm table-borderless">
+        {% assign shown = 0 %}
+        {% for item in chronological %}
+          {% assign ts = item.date | date: '%s' | plus: 0 %}
+          {% if ts >= now_ts and shown < events_limit %}
+            {% include event_row.liquid item=item %}
+            {% assign shown = shown | plus: 1 %}
+          {% endif %}
+        {% endfor %}
+        {% for item in chronological reversed %}
+          {% assign ts = item.date | date: '%s' | plus: 0 %}
+          {% if ts < now_ts and shown < events_limit %}
+            {% include event_row.liquid item=item %}
+            {% assign shown = shown | plus: 1 %}
+          {% endif %}
+        {% endfor %}
+      </table>
+    </div>
+  {% endif %}
+</div>

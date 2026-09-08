@@ -4,7 +4,7 @@ title: programs
 permalink: /programs/
 description: Doctoral programs in psychometrics, measurement, and quantitative methods across New York City.
 nav: true
-nav_order: 1
+nav_order: 3
 horizontal: false
 ---
 

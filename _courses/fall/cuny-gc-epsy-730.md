@@ -8,7 +8,7 @@ university_slug: "cuny-graduate-center"
 instructor: "Jay Verkuilen"
 semester: "Fall"
 semester_order: 1
-meeting_times: "Tu 415-615 (hybrid, some online, some in person depending on the day)"
+meeting_times: "T 4.15-6.15p"
 meetings:
   - day_index: 1
     day_name: "Tuesday"
@@ -22,4 +22,4 @@ meetings:
     label: "hybrid, some online, some in person depending on the day"
 ---
 
-I haven't taught this course in a long time so it's being rebuilt. This course covers psychometrics, focusing on item writing and evaluation, classical test theory, a short introduction to IRT and LCA. I'm adding some Generative AI in psychometrics at the end of the semesters.
+Course currently undergoing a rebuild. This course covers psychometrics, focusing on item writing and evaluation, classical test theory, a short introduction to IRT and LCA. I'm adding some Generative AI in psychometrics at the end of the semesters.

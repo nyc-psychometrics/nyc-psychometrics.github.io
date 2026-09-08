@@ -19,7 +19,7 @@ _No courses have been submitted yet._
 
 {% else %}
 {% for semester in ordered %}
-{% assign semester_courses = site.courses | where: "semester", semester | sort: "course_number" %}
+{% assign semester_courses = site.courses | where: "semester", semester | sort_natural: "title" %}
 
 <h2 id="{{ semester | slugify }}" class="course-semester">{{ semester }}</h2>
 

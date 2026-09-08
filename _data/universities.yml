@@ -5,8 +5,8 @@
 # each university's own website. `abbr` only shapes course URLs, so changing
 # one after publication will move those pages.
 #
-# bin/fetch_courses.py appends any new university it finds in the form with a
-# placeholder color and a TODO -- replace those with the real brand color.
+# Add an entry here before adding a course for a new school. A course whose
+# university_slug is missing from this file falls back to the site theme color.
 
 cuny-graduate-center:
   name: "CUNY Graduate Center"

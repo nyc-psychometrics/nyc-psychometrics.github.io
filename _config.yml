@@ -5,12 +5,12 @@
 title: New York City Psychometrics Group # the website title (if blank, full name will be used instead)
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
   A community devoted to psychometric happenings in and around New York City.
-keywords:  # add your own keywords or leave empty
+keywords: # add your own keywords or leave empty
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
-icon:  # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
+icon: # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
 
 url: https://psychometrics.nyc # the base hostname & protocol for your site
-baseurl:  # the subpath of your site, e.g. /blog/. Leave blank for root
+baseurl: # the subpath of your site, e.g. /blog/. Leave blank for root
 last_updated: false # set to true if you want to display last updated in the footer
 impressum_path: # set to path to include impressum link in the footer, use the same path as permalink in a page, helps to conform with EU GDPR
 back_to_top: false # set to false to disable the back to top button
@@ -138,9 +138,7 @@ collections:
     output: true
   courses:
     output: true
-  news:
-    defaults:
-      layout: post
+  events:
     output: true
   projects:
     output: true
@@ -150,6 +148,10 @@ collections:
 # -----------------------------------------------------------------------------
 
 # Markdown and syntax highlight
+# Events are usually dated in the future; without this Jekyll skips them and
+# every link to an upcoming event 404s.
+future: true
+
 markdown: kramdown
 highlighter: rouge
 kramdown:
@@ -165,6 +167,7 @@ kramdown:
 # Includes & excludes
 include: ["_pages", "_scripts"]
 exclude:
+  - _templates/
   - bin/
   - CONTRIBUTING.md
   - CUSTOMIZE.md
@@ -214,6 +217,16 @@ defaults:
       path: "assets"
     values:
       sitemap: false
+  - scope:
+      path: ""
+      type: events
+    values:
+      layout: event
+  - scope:
+      path: ""
+      type: courses
+    values:
+      layout: course
 
 sass:
   style: compressed

@@ -1,5 +1,5 @@
 ---
-layout: post
+title: Website launch
 date: 2026-06-22 08:00:00-0400
 inline: true
 related_posts: false

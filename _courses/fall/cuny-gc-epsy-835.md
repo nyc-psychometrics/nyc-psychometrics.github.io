@@ -8,7 +8,7 @@ university_slug: "cuny-graduate-center"
 instructor: "Jay Verkuilen"
 semester: "Fall"
 semester_order: 1
-meeting_times: "Th 415-615 (hybrid, online and in person depending on the week)"
+meeting_times: "Th 4.15-6.15p"
 meetings:
   - day_index: 3
     day_name: "Thursday"

@@ -1,0 +1,27 @@
+name: Scheduled rebuild
+
+# Whether an event is "upcoming" or "past" is decided when the site is built.
+# Without a periodic rebuild an event stays under Upcoming after it happens,
+# until someone happens to push. This redeploys the site daily so the split on
+# the home and events pages stays correct on its own.
+#
+# Safe to delete if you would rather the site only rebuild on push.
+
+on:
+  schedule:
+    - cron: "0 8 * * *" # daily, ~4am Eastern
+  workflow_dispatch:
+
+permissions:
+  actions: write
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+      - name: Trigger deploy 🚀
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run deploy.yml --ref ${{ github.ref_name }}

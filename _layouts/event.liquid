@@ -1,0 +1,66 @@
+---
+layout: default
+---
+{% comment %}
+  Layout for a single event. Everything below the title is optional, so a
+  sparse event (title, date, body) renders cleanly without empty rows.
+
+  `date` is when the event happens -- not when the file was written, which is
+  what the generic `post` layout assumed.
+{% endcomment %}
+
+{% assign same_day = false %}
+{% if page.end_date %}
+  {% assign start_day = page.date | date: '%Y-%m-%d' %}
+  {% assign end_day = page.end_date | date: '%Y-%m-%d' %}
+  {% if start_day == end_day %}
+    {% assign same_day = true %}
+  {% endif %}
+{% endif %}
+
+<div class="post event-page">
+  <header class="post-header">
+    <h1 class="post-title">{{ page.title }}</h1>
+    {% if page.speaker %}
+      <p class="post-description">{{ page.speaker }}</p>
+    {% endif %}
+  </header>
+
+  <article class="post-content">
+    <dl class="event-facts">
+      <dt>When</dt>
+      <dd>
+        {{ page.date | date: '%A, %B %-d, %Y' }}
+        {% if page.end_date %}
+          {% if same_day %}
+            &middot; {{ page.date | date: '%-I:%M' }}&ndash;{{ page.end_date | date: '%-I:%M %p' | downcase }}
+          {% else %}
+            &ndash; {{ page.end_date | date: '%A, %B %-d, %Y' }}
+          {% endif %}
+        {% else %}
+          &middot; {{ page.date | date: '%-I:%M %p' | downcase }}
+        {% endif %}
+      </dd>
+
+      {% if page.location %}
+        <dt>Where</dt>
+        <dd>{{ page.location }}</dd>
+      {% endif %}
+
+      {% if page.link %}
+        <dt>More info</dt>
+        <dd>
+          <a href="{{ page.link }}">{{ page.link | remove: 'https://' | remove: 'http://' | truncate: 60 }}</a>
+        </dd>
+      {% endif %}
+    </dl>
+
+    <div id="markdown-content">
+      {{ content }}
+    </div>
+
+    <p class="event-back">
+      <a href="{{ '/events/' | relative_url }}">&larr; All events</a>
+    </p>
+  </article>
+</div>
