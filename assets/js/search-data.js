@@ -9,12 +9,12 @@ ninja.data = [{
     handler: () => {
       window.location.href = "/";
     },
-  },{id: "nav-programs",
-          title: "programs",
-          description: "Doctoral programs in psychometrics, measurement, and quantitative methods across New York City.",
+  },{id: "nav-events",
+          title: "events",
+          description: "",
           section: "Navigation",
           handler: () => {
-            window.location.href = "/programs/";
+            window.location.href = "/events/";
           },
         },{id: "nav-courses",
           title: "courses",
@@ -23,12 +23,12 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/courses/";
           },
-        },{id: "nav-events",
-          title: "events",
-          description: "",
+        },{id: "nav-programs",
+          title: "programs",
+          description: "Doctoral programs in psychometrics, measurement, and quantitative methods across New York City.",
           section: "Navigation",
           handler: () => {
-            window.location.href = "/events/";
+            window.location.href = "/programs/";
           },
         },{id: "nav-join",
           title: "join",
@@ -89,19 +89,24 @@ ninja.data = [{
           description: "",
           section: "Courses",handler: () => {
               window.location.href = "/courses/spring/nyu-apsta-ge-2094/";
-            },},{id: "news-welcome-the-nyc-psychometrics-group-website-is-up-join-our-google-group-to-hear-about-upcoming-events-tada",
+            },},{id: "events-welcome-the-nyc-psychometrics-group-website-is-up-join-our-google-group-to-hear-about-upcoming-events-tada",
           title: 'Welcome! The NYC Psychometrics Group website is up. Join our Google Group to...',
           description: "",
-          section: "News",},{id: "news-modern-modeling-methods-m3-conference",
+          section: "Events",},{id: "events-modern-modeling-methods-m3-conference",
           title: 'Modern Modeling Methods (M3) Conference',
           description: "",
-          section: "News",handler: () => {
-              window.location.href = "/news/announcement_2/";
-            },},{id: "news-nyc-psychometrics-event-ben-domingue",
+          section: "Events",handler: () => {
+              window.location.href = "/events/2026-06-23-m3-conference/";
+            },},{id: "events-fall-2026-kick-off",
+          title: 'Fall 2026 Kick-Off',
+          description: "",
+          section: "Events",handler: () => {
+              window.location.href = "/events/2026-09-25-fall-kick-off/";
+            },},{id: "events-nyc-psychometrics-event-ben-domingue",
           title: 'NYC Psychometrics Event: Ben Domingue',
           description: "",
-          section: "News",handler: () => {
-              window.location.href = "/news/announcement_3/";
+          section: "Events",handler: () => {
+              window.location.href = "/events/2026-12-11-ben-domingue/";
             },},{id: "projects-cuny-graduate-center",
           title: 'CUNY Graduate Center',
           description: "Ph.D. in Educational Psychology",
