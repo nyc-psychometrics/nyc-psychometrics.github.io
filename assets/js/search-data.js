@@ -16,6 +16,13 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/programs/";
           },
+        },{id: "nav-courses",
+          title: "courses",
+          description: "Graduate courses in psychometrics, measurement, and quantitative methods offered across New York City.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/courses/";
+          },
         },{id: "nav-events",
           title: "events",
           description: "",
@@ -52,7 +59,37 @@ ninja.data = [{
             window.open("https://medium.com/@al-folio/displaying-external-posts-on-your-al-folio-blog-b60a1d241a0a?source=rss-17feae71c3c4------2", "_blank");
           
         },
-      },{id: "news-welcome-the-nyc-psychometrics-group-website-is-up-join-our-google-group-to-hear-about-upcoming-events-tada",
+      },{id: "courses-psychometrics",
+          title: 'Psychometrics',
+          description: "",
+          section: "Courses",handler: () => {
+              window.location.href = "/courses/fall/cuny-gc-epsy-730/";
+            },},{id: "courses-categorical-data-analysis",
+          title: 'Categorical Data Analysis',
+          description: "",
+          section: "Courses",handler: () => {
+              window.location.href = "/courses/fall/cuny-gc-epsy-835/";
+            },},{id: "courses-longitudinal-models",
+          title: 'Longitudinal Models',
+          description: "",
+          section: "Courses",handler: () => {
+              window.location.href = "/courses/fall/fordham-psyc-7865/";
+            },},{id: "courses-practicum-in-applied-statistics-statistical-computing",
+          title: 'Practicum in Applied Statistics: Statistical Computing',
+          description: "",
+          section: "Courses",handler: () => {
+              window.location.href = "/courses/fall/nyu-apsta-ge-2352/";
+            },},{id: "courses-survey-and-scale-design",
+          title: 'Survey and Scale Design',
+          description: "",
+          section: "Courses",handler: () => {
+              window.location.href = "/courses/spring/fordham-psyc-78xx/";
+            },},{id: "courses-modern-approaches-in-measurement",
+          title: 'Modern Approaches in Measurement',
+          description: "",
+          section: "Courses",handler: () => {
+              window.location.href = "/courses/spring/nyu-apsta-ge-2094/";
+            },},{id: "news-welcome-the-nyc-psychometrics-group-website-is-up-join-our-google-group-to-hear-about-upcoming-events-tada",
           title: 'Welcome! The NYC Psychometrics Group website is up. Join our Google Group to...',
           description: "",
           section: "News",},{id: "news-modern-modeling-methods-m3-conference",
