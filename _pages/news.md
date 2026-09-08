@@ -3,7 +3,7 @@ layout: page
 title: events
 permalink: /events/
 nav: true
-nav_order: 2
+nav_order: 3
 ---
 
 Announcements, talks, happy hours, and meetups from across the NYC psychometrics community.

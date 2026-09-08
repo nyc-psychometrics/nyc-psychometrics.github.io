@@ -4,7 +4,7 @@ title: join
 permalink: /join/
 description: Join the NYC Psychometrics Google Group to get announcements and connect with the community.
 nav: true
-nav_order: 3
+nav_order: 4
 ---
 
 Our [Google Group](https://groups.google.com/g/psychometrics-nyc) is the hub of the community. Joining gets you:

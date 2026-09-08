@@ -1,0 +1,27 @@
+# Universities appearing in the course submissions.
+#
+# `color` is the school's brand color, used for its blocks on the week
+# calendars and for the accent rule on its course pages. Colors are taken from
+# each university's own website. `abbr` only shapes course URLs, so changing
+# one after publication will move those pages.
+#
+# bin/fetch_courses.py appends any new university it finds in the form with a
+# placeholder color and a TODO -- replace those with the real brand color.
+
+cuny-graduate-center:
+  name: "CUNY Graduate Center"
+  abbr: "cuny-gc"
+  color: "#005daa" # GC blue from gc.cuny.edu
+  url: "https://www.gc.cuny.edu/"
+
+fordham-university:
+  name: "Fordham University"
+  abbr: "fordham"
+  color: "#7e072a" # Fordham maroon, from fordham.edu
+  url: "https://www.fordham.edu/"
+
+new-york-university:
+  name: "New York University"
+  abbr: "nyu"
+  color: "#57068c" # NYU violet, from nyu.edu
+  url: "https://www.nyu.edu/"

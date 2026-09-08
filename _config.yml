@@ -136,6 +136,8 @@ newsletter:
 collections:
   books:
     output: true
+  courses:
+    output: true
   news:
     defaults:
       layout: post

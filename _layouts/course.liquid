@@ -1,0 +1,82 @@
+---
+layout: default
+---
+{% assign uni = site.data.universities[page.university_slug] %}
+{% capture uni_color %}{% if uni.color %}{{ uni.color }}{% else %}var(--global-theme-color){% endif %}{% endcapture %}
+
+<div class="post course-page" style="--uni-color: {{ uni_color }}">
+  <header class="post-header">
+    <p class="course-eyebrow">
+      <a href="{{ '/courses/' | relative_url }}#{{ page.semester | slugify }}">{{ page.semester }}</a>
+      {% if page.course_number -%}
+        <span class="course-eyebrow-sep">&middot;</span>{{ page.course_number -}}
+      {%- endif %}
+    </p>
+    <h1 class="post-title">{{ page.title }}</h1>
+    <p class="post-description">
+      {% if uni.url -%}
+        <a href="{{ uni.url }}">{{ page.university }}</a>
+      {%- else -%}
+        {{- page.university -}}
+      {%- endif %}
+      {% if page.instructor -%}
+        <span class="course-eyebrow-sep">&middot;</span>{{ page.instructor -}}
+      {%- endif %}
+    </p>
+  </header>
+
+  <article>
+    <dl class="course-facts">
+      {% if page.meetings and page.meetings.size > 0 %}
+        <dt>Meets</dt>
+        <dd>
+          <ul class="course-meetings">
+            {% for meeting in page.meetings %}
+              <li>
+                <strong>{{ meeting.day_name }}</strong> {{ meeting.start }}&ndash;{{ meeting.end }}
+                {% if meeting.label -%}
+                  <span class="course-meeting-label">{{ meeting.label }}</span>
+                {%- endif %}
+              </li>
+            {% endfor %}
+          </ul>
+          {%- comment -%}
+            The submitted text is always shown alongside the parsed schedule, so
+            nothing in the original submission is lost to a misread.
+          {%- endcomment -%}
+          {% if page.meeting_times %}
+            <p class="course-meeting-raw">As submitted: {{ page.meeting_times }}</p>
+          {% endif %}
+        </dd>
+      {% elsif page.meeting_times %}
+        <dt>Meets</dt>
+        <dd>{{ page.meeting_times }}</dd>
+      {% endif %}
+
+      {% if page.unscheduled %}
+        <dt>Also</dt>
+        <dd>
+          {% for entry in page.unscheduled -%}
+            {{- entry -}}
+            {%- unless forloop.last %}; {% endunless -%}
+          {%- endfor %}
+        </dd>
+      {% endif %}
+
+      {% if page.link %}
+        <dt>Syllabus</dt>
+        <dd>
+          <a href="{{ page.link }}">{{ page.link | remove: 'https://' | remove: 'http://' | truncate: 60 }}</a>
+        </dd>
+      {% endif %}
+    </dl>
+
+    <div class="course-description">
+      {{ content }}
+    </div>
+
+    <p class="course-back">
+      <a href="{{ '/courses/' | relative_url }}#{{ page.semester | slugify }}">&larr; All {{ page.semester }} courses</a>
+    </p>
+  </article>
+</div>

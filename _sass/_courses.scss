@@ -1,0 +1,329 @@
+/*******************************************************************************
+ * Courses: index table, per-semester week calendar, and course pages.
+ ******************************************************************************/
+
+// University brand colors are dark and saturated, which reads well on the light
+// theme but sinks into the dark background. Lighten them just for dark mode so
+// blocks stay distinguishable from each other and from the page.
+@mixin uni-fill {
+  background-color: var(--uni-color);
+
+  html[data-theme="dark"] & {
+    background-color: color-mix(in srgb, var(--uni-color) 72%, #ffffff);
+  }
+}
+
+.course-semester {
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  scroll-margin-top: 5rem; // clears the fixed navbar when linked to by anchor
+}
+
+/* -----------------------------------------------------------------------------
+ * Week calendar
+ * -------------------------------------------------------------------------- */
+
+.course-cal {
+  display: grid;
+  grid-template-columns: 3.6rem repeat(5, 1fr);
+  grid-template-rows: auto 1fr;
+  gap: 0 2px;
+  margin-bottom: 1rem;
+  // 2.6rem per hour keeps a 50-minute lab legible without a huge grid.
+  --cal-height: calc(var(--cal-rows) * 2.6rem);
+}
+
+.course-cal-corner {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.course-cal-dayname {
+  grid-row: 1;
+  padding-bottom: 0.3rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--global-text-color-light);
+
+  abbr {
+    text-decoration: none;
+    border-bottom: none;
+  }
+}
+
+.course-cal-hours {
+  grid-column: 1;
+  grid-row: 2;
+  height: var(--cal-height);
+  display: grid;
+  grid-template-rows: repeat(var(--cal-rows), 1fr);
+}
+
+.course-cal-hour {
+  position: relative;
+  font-size: 0.7rem;
+  line-height: 1;
+  color: var(--global-text-color-light);
+  text-align: right;
+  padding-right: 0.4rem;
+
+  span {
+    position: relative;
+    top: -0.35em; // sit on the hour line rather than below it
+  }
+}
+
+.course-cal-col {
+  grid-row: 2;
+  position: relative;
+  height: var(--cal-height);
+  border-left: 1px solid var(--global-divider-color);
+  // One rule per hour, sized off the row count so it always lines up.
+  background-image: linear-gradient(to bottom, var(--global-divider-color) 1px, transparent 1px);
+  background-size: 100% calc(100% / var(--cal-rows));
+  // The gradient draws a rule at the top of each hour; close off the bottom.
+  border-bottom: 1px solid var(--global-divider-color);
+
+  &:last-child {
+    border-right: 1px solid var(--global-divider-color);
+  }
+}
+
+.course-cal-block {
+  @include uni-fill;
+  position: absolute;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 0.2rem 0.35rem;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #ffffff;
+  font-size: 0.68rem;
+  line-height: 1.15;
+  text-decoration: none;
+  transition: filter 0.15s ease-in-out;
+
+  &:hover,
+  &:focus {
+    filter: brightness(1.15);
+    color: #ffffff;
+    text-decoration: none;
+    z-index: 2;
+  }
+
+  .ccb-number {
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ccb-title {
+    flex: 1 1 auto;
+    overflow: hidden;
+    opacity: 0.95;
+  }
+
+  .ccb-time {
+    font-variant-numeric: tabular-nums;
+    opacity: 0.85;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+/* -----------------------------------------------------------------------------
+ * Agenda (narrow screens)
+ * -------------------------------------------------------------------------- */
+
+.course-agenda {
+  display: none;
+  margin-bottom: 1rem;
+}
+
+.course-agenda-day {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 1rem 0 0.35rem;
+}
+
+.course-agenda-list {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0;
+
+  li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0 0.6rem;
+    padding: 0.35rem 0 0.35rem 0.6rem;
+    border-left: 4px solid var(--uni-color);
+    margin-bottom: 0.3rem;
+  }
+}
+
+.course-agenda-time {
+  grid-row: 1 / span 2;
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--global-text-color-light);
+  white-space: nowrap;
+}
+
+.course-agenda-uni {
+  font-size: 0.75rem;
+  color: var(--global-text-color-light);
+}
+
+/* -----------------------------------------------------------------------------
+ * Legend, table, and stragglers
+ * -------------------------------------------------------------------------- */
+
+.course-legend {
+  list-style: none;
+  padding-left: 0;
+  margin: 0 0 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  font-size: 0.78rem;
+  color: var(--global-text-color-light);
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+}
+
+.course-legend-swatch,
+.course-uni-dot {
+  @include uni-fill;
+  display: inline-block;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 2px;
+  flex: none;
+}
+
+.course-uni-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  margin-right: 0.15rem;
+}
+
+.course-cal-unplaced {
+  font-size: 0.8rem;
+  color: var(--global-text-color-light);
+  margin-bottom: 1.25rem;
+}
+
+.course-table {
+  font-size: 0.9rem;
+
+  .course-table-number {
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+    color: var(--global-text-color-light);
+  }
+}
+
+.course-footnote {
+  margin-top: 2.5rem;
+  font-size: 0.85rem;
+  color: var(--global-text-color-light);
+}
+
+/* -----------------------------------------------------------------------------
+ * Course page
+ * -------------------------------------------------------------------------- */
+
+.course-page {
+  .post-header {
+    border-left: 4px solid var(--uni-color);
+    padding-left: 1rem;
+  }
+
+  .course-eyebrow {
+    margin-bottom: 0.2rem;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--global-text-color-light);
+  }
+
+  .course-eyebrow-sep {
+    margin: 0 0.4rem;
+    opacity: 0.6;
+  }
+
+  .post-description {
+    margin-top: 0.3rem;
+  }
+}
+
+.course-facts {
+  display: grid;
+  grid-template-columns: 6rem 1fr;
+  gap: 0.5rem 1rem;
+  margin: 1.5rem 0 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--global-divider-color);
+  font-size: 0.9rem;
+
+  dt {
+    font-weight: 600;
+    color: var(--global-text-color-light);
+  }
+
+  dd {
+    margin-bottom: 0;
+    overflow-wrap: anywhere;
+  }
+}
+
+.course-meetings {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0.35rem;
+}
+
+.course-meeting-label {
+  margin-left: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--global-text-color-light);
+}
+
+.course-meeting-raw {
+  margin-bottom: 0;
+  font-size: 0.78rem;
+  color: var(--global-text-color-light);
+}
+
+.course-back {
+  margin-top: 2.5rem;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 640px) {
+  .course-cal,
+  .course-legend {
+    display: none;
+  }
+
+  .course-agenda {
+    display: block;
+  }
+
+  .course-facts {
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
+
+    dt {
+      margin-top: 0.75rem;
+    }
+  }
+}

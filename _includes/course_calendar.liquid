@@ -1,0 +1,157 @@
+{%- comment -%}
+  Week calendar for one semester.
+
+  Params:
+    courses  -- the courses in this semester
+    semester -- semester name, used for accessible labelling
+
+  The grid spans only the hours this semester actually uses. Blocks are
+  positioned as percentages of that span via calc(), so the layout stays exact
+  without Liquid having to do floating-point math. `lane`/`lanes` come from the
+  generator and place overlapping courses side by side.
+{%- endcomment -%}
+
+{%- assign min_m = 1440 -%}
+{%- assign max_m = 0 -%}
+{%- assign scheduled = false -%}
+{%- for course in include.courses -%}
+  {%- for meeting in course.meetings -%}
+    {%- assign scheduled = true -%}
+    {%- if meeting.start_minutes < min_m %}{% assign min_m = meeting.start_minutes %}{% endif -%}
+    {%- if meeting.end_minutes > max_m %}{% assign max_m = meeting.end_minutes %}{% endif -%}
+  {%- endfor -%}
+{%- endfor -%}
+
+{%- if scheduled -%}
+  {%- assign start_hour = min_m | divided_by: 60 -%}
+  {%- assign end_hour = max_m | plus: 59 | divided_by: 60 -%}
+  {%- assign last_hour = end_hour | minus: 1 -%}
+  {%- assign grid_start = start_hour | times: 60 -%}
+  {%- assign span = end_hour | minus: start_hour | times: 60 -%}
+  {%- assign rows = end_hour | minus: start_hour -%}
+  {%- assign day_names = 'Monday,Tuesday,Wednesday,Thursday,Friday' | split: ',' -%}
+  {%- assign day_abbrs = 'Mon,Tue,Wed,Thu,Fri' | split: ',' -%}
+
+  <!-- Week grid (wide screens) -->
+  <div class="course-cal" style="--cal-rows: {{ rows }}" role="table" aria-label="{{ include.semester }} weekly meeting times">
+    <div class="course-cal-corner" aria-hidden="true"></div>
+    {%- for day in (0..4) %}
+      <div class="course-cal-dayname" role="columnheader" style="grid-column: {{ day | plus: 2 }}">
+        <abbr title="{{ day_names[day] }}">{{ day_abbrs[day] }}</abbr>
+      </div>
+    {%- endfor %}
+
+    <div class="course-cal-hours" aria-hidden="true">
+      {%- for hour in (start_hour..last_hour) -%}
+        {%- assign h12 = hour | modulo: 12 -%}
+        {%- if h12 == 0 %}{% assign h12 = 12 %}{% endif -%}
+        <div class="course-cal-hour">
+          <span>
+            {{- h12 -}}
+            {%- if hour < 12 %} AM{% else %} PM{% endif -%}
+          </span>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    {%- for day in (0..4) %}
+      <div class="course-cal-col" role="cell" style="grid-column: {{ day | plus: 2 }}">
+        {%- for course in include.courses -%}
+          {%- assign uni = site.data.universities[course.university_slug] -%}
+          {%- for meeting in course.meetings -%}
+            {%- if meeting.day_index == day -%}
+              {%- assign offset = meeting.start_minutes | minus: grid_start -%}
+              {%- assign duration = meeting.end_minutes | minus: meeting.start_minutes -%}
+              {%- assign lanes = meeting.lanes | default: 1 -%}
+              {%- assign lane = meeting.lane | default: 0 -%}
+              <a
+                class="course-cal-block"
+                href="{{ course.url | relative_url }}"
+                title="{{ course.course_number }} &middot; {{ course.title }} &middot; {{ course.university }} &middot; {{ meeting.start }}&ndash;{{ meeting.end }}"
+                style="--uni-color: {% if uni.color %}{{ uni.color }}{% else %}var(--global-theme-color){% endif %}; top: calc(100% * {{ offset }} / {{ span }}); height: calc(100% * {{ duration }} / {{ span }}); left: calc(100% * {{ lane }} / {{ lanes }}); width: calc(100% / {{ lanes }});"
+              >
+                <span class="ccb-number">{{ course.course_number }}</span>
+                <span class="ccb-title">{{ course.title }}</span>
+                <span class="ccb-time">
+                  {{- meeting.start }}&ndash;{{ meeting.end -}}
+                  {%- if meeting.label and meeting.label.size < 20 %} ({{ meeting.label }}){% endif -%}
+                </span>
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
+    {%- endfor %}
+  </div>
+
+  <!-- Day-by-day agenda (narrow screens): a 5-column grid is unreadable on a phone -->
+  <div class="course-agenda">
+    {%- for day in (0..4) -%}
+      {%- assign day_has_meetings = false -%}
+      {%- for course in include.courses -%}
+        {%- for meeting in course.meetings -%}
+          {%- if meeting.day_index == day %}{% assign day_has_meetings = true %}{% endif -%}
+        {%- endfor -%}
+      {%- endfor -%}
+      {%- if day_has_meetings %}
+        <h4 class="course-agenda-day">{{ day_names[day] }}</h4>
+        <ul class="course-agenda-list">
+          {%- for course in include.courses -%}
+            {%- assign uni = site.data.universities[course.university_slug] -%}
+            {%- for meeting in course.meetings -%}
+              {%- if meeting.day_index == day %}
+                <li style="--uni-color: {% if uni.color %}{{ uni.color }}{% else %}var(--global-theme-color){% endif %}">
+                  <span class="course-agenda-time">{{ meeting.start }}&ndash;{{ meeting.end }}</span>
+                  <a href="{{ course.url | relative_url }}">{{ course.course_number }} &middot; {{ course.title }}</a>
+                  <span class="course-agenda-uni">
+                    {{- course.university -}}
+                    {%- if meeting.label and meeting.label.size < 20 %} &middot; {{ meeting.label }}{% endif -%}
+                  </span>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+
+  <!-- Legend -->
+  {%- assign uni_slugs = include.courses | map: 'university_slug' | uniq | sort -%}
+  <ul class="course-legend">
+    {%- for slug in uni_slugs -%}
+      {%- assign uni = site.data.universities[slug] -%}
+      <li>
+        <span
+          class="course-legend-swatch"
+          style="--uni-color: {% if uni.color %}{{ uni.color }}{% else %}var(--global-theme-color){% endif %}"
+        ></span>
+        {% if uni.name %}{{ uni.name }}{% else %}{{ slug | replace: '-', ' ' | capitalize }}{% endif %}
+      </li>
+    {%- endfor -%}
+  </ul>
+{%- endif -%}
+
+{%- comment -%} Meeting times we could not place on the grid are surfaced, never dropped. {%- endcomment -%}
+{%- assign unplaced_count = 0 -%}
+{%- for course in include.courses -%}
+  {%- if course.meetings == null or course.meetings.size == 0 -%}
+    {%- assign unplaced_count = unplaced_count | plus: 1 -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- if unplaced_count > 0 %}
+  <p class="course-cal-unplaced">
+    <strong>Meeting time not on the grid:</strong>
+    {%- assign shown = 0 -%}
+    {%- for course in include.courses -%}
+      {%- if course.meetings == null or course.meetings.size == 0 -%}
+        {%- if shown > 0 %};{% endif %}
+        {%- assign shown = shown | plus: 1 %}
+        <a href="{{ course.url | relative_url }}">
+          {%- if course.course_number %}{{ course.course_number }}{% else %}{{ course.title }}{% endif -%}
+        </a>
+        {%- if course.meeting_times %} ({{ course.meeting_times }}){% endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+  </p>
+{%- endif -%}
