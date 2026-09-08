@@ -105,12 +105,25 @@
   text-decoration: none;
   transition: filter 0.15s ease-in-out;
 
+  &:visited,
+  &:active {
+    color: #ffffff;
+  }
+
   &:hover,
   &:focus {
     filter: brightness(1.15);
     color: #ffffff;
     text-decoration: none;
     z-index: 2;
+  }
+
+  // Set explicitly on each child: inheritance alone loses to any theme or
+  // vendor rule that colors descendants of a link.
+  .ccb-number,
+  .ccb-title,
+  .ccb-time {
+    color: #ffffff;
   }
 
   .ccb-number {
@@ -123,12 +136,10 @@
   .ccb-title {
     flex: 1 1 auto;
     overflow: hidden;
-    opacity: 0.95;
   }
 
   .ccb-time {
     font-variant-numeric: tabular-nums;
-    opacity: 0.85;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

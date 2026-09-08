@@ -65,8 +65,8 @@
     {% endif %}
   {% else %}
     {%- comment -%}
-      Home page: upcoming first (soonest at top), then recent past events fill
-      out the remaining slots.
+      Home page: upcoming events only, soonest at top. Past events are not
+      shown here -- they live in the "Past events" section of /events/.
     {%- endcomment -%}
     {% assign events_size = site.events | size %}
     {% if include.limit and page.announcements.limit %}
@@ -76,7 +76,7 @@
     {% endif %}
     <div
       class="table-responsive"
-      {% if include.limit and page.announcements.scrollable and events_size > 3 %}
+      {% if include.limit and page.announcements.scrollable and upcoming_count > 3 %}
         style="max-height: 60vw"
       {% endif %}
     >
@@ -89,14 +89,13 @@
             {% assign shown = shown | plus: 1 %}
           {% endif %}
         {% endfor %}
-        {% for item in chronological reversed %}
-          {% assign ts = item.date | date: '%s' | plus: 0 %}
-          {% if ts < now_ts and shown < events_limit %}
-            {% include event_row.liquid item=item %}
-            {% assign shown = shown | plus: 1 %}
-          {% endif %}
-        {% endfor %}
       </table>
     </div>
+    {% if upcoming_count == 0 %}
+      <p class="events-empty">
+        No upcoming events right now &mdash; see
+        <a href="{{ '/events/' | relative_url }}">past events</a>.
+      </p>
+    {% endif %}
   {% endif %}
 </div>
