@@ -152,6 +152,10 @@ collections:
 # every link to an upcoming event 404s.
 future: true
 
+# Render all dates and times in Eastern time. Without this the GitHub Actions
+# build runs in UTC and a 3pm event shows up as 7pm.
+timezone: America/New_York
+
 markdown: kramdown
 highlighter: rouge
 kramdown:

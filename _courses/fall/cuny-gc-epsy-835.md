@@ -19,7 +19,6 @@ meetings:
     end_minutes: 1095
     lane: 0
     lanes: 2
-    label: "hybrid, online and in person depending on the week"
 ---
 
 This course covers categorical data analysis. It presumes a prior course in linear models.

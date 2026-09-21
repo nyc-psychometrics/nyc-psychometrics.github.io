@@ -99,29 +99,52 @@
 
   <div class="course-agenda">
     {%- for day in (0..4) -%}
-      {%- assign day_has_meetings = false -%}
+      {%- assign day_count = 0 -%}
       {%- for course in include.courses -%}
         {%- for meeting in course.meetings -%}
-          {%- if meeting.day_index == day %}{% assign day_has_meetings = true %}{% endif -%}
+          {%- if meeting.day_index == day %}{% assign day_count = day_count | plus: 1 %}{% endif -%}
         {%- endfor -%}
       {%- endfor -%}
-      {%- if day_has_meetings %}
+      {%- if day_count > 0 %}
         <h4 class="course-agenda-day">{{ day_names[day] }}</h4>
         <ul class="course-agenda-list">
-          {%- for course in include.courses -%}
-            {%- assign uni = site.data.universities[course.university_slug] -%}
-            {%- for meeting in course.meetings -%}
-              {%- if meeting.day_index == day %}
-                <li style="--uni-color: {% if uni.color %}{{ uni.color }}{% else %}var(--global-theme-color){% endif %}">
-                  <span class="course-agenda-time">{{ meeting.start }}&ndash;{{ meeting.end }}</span>
-                  <a href="{{ course.url | relative_url }}">{{ course.course_number }} &middot; {{ course.title }}</a>
-                  <span class="course-agenda-uni">
-                    {{- course.university -}}
-                    {%- if meeting.label and meeting.label.size < 20 %} &middot; {{ meeting.label }}{% endif -%}
-                  </span>
-                </li>
-              {%- endif -%}
+          {%- comment -%}
+            The agenda has to read in time order, but Liquid cannot flatten and
+            sort meetings across courses (no push filter), and the courses
+            arrive sorted by title. So walk the day forward: each pass finds the
+            earliest start after the previous one and emits every meeting at
+            that time, which also keeps ties together. day_count is an upper
+            bound on the passes needed; ties just make later passes find
+            nothing.
+          {%- endcomment -%}
+          {%- assign prev_start = -1 -%}
+          {%- for pass in (1..day_count) -%}
+            {%- assign next_start = 2000 -%}
+            {%- for course in include.courses -%}
+              {%- for meeting in course.meetings -%}
+                {%- if meeting.day_index == day and meeting.start_minutes > prev_start and meeting.start_minutes < next_start -%}
+                  {%- assign next_start = meeting.start_minutes -%}
+                {%- endif -%}
+              {%- endfor -%}
             {%- endfor -%}
+            {%- if next_start < 2000 -%}
+              {%- for course in include.courses -%}
+                {%- assign uni = site.data.universities[course.university_slug] -%}
+                {%- for meeting in course.meetings -%}
+                  {%- if meeting.day_index == day and meeting.start_minutes == next_start %}
+                    <li style="--uni-color: {% if uni.color %}{{ uni.color }}{% else %}var(--global-theme-color){% endif %}">
+                      <span class="course-agenda-time">{{ meeting.start }}&ndash;{{ meeting.end }}</span>
+                      <a href="{{ course.url | relative_url }}">{{ course.course_number }} &middot; {{ course.title }}</a>
+                      <span class="course-agenda-uni">
+                        {{- course.university -}}
+                        {%- if meeting.label and meeting.label.size < 20 %} &middot; {{ meeting.label }}{% endif -%}
+                      </span>
+                    </li>
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- endfor -%}
+              {%- assign prev_start = next_start -%}
+            {%- endif -%}
           {%- endfor -%}
         </ul>
       {%- endif -%}

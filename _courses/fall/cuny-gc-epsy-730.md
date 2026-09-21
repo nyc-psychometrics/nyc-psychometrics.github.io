@@ -19,7 +19,6 @@ meetings:
     end_minutes: 1095
     lane: 0
     lanes: 1
-    label: "hybrid, some online, some in person depending on the day"
 ---
 
 Course currently undergoing a rebuild. This course covers psychometrics, focusing on item writing and evaluation, classical test theory, a short introduction to IRT and LCA. I'm adding some Generative AI in psychometrics at the end of the semesters.
