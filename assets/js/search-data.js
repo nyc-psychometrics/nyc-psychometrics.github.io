@@ -74,6 +74,11 @@ ninja.data = [{
           description: "",
           section: "Courses",handler: () => {
               window.location.href = "/courses/fall/fordham-psyc-7865/";
+            },},{id: "courses-survey-research-methods",
+          title: 'Survey Research Methods',
+          description: "",
+          section: "Courses",handler: () => {
+              window.location.href = "/courses/fall/nyu-apsta-ge-2139/";
             },},{id: "courses-practicum-in-applied-statistics-statistical-computing",
           title: 'Practicum in Applied Statistics: Statistical Computing',
           description: "",
